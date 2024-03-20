@@ -111,6 +111,11 @@ public class User implements Serializable {
      */
     private String level;
 
+    /**
+     * 头像
+     */
+    private String staffPhoto;
+
     public User(Object [] values) {
         //用户名	手机号	工号	聘用 形式	入职 时间	部门编码
         this.username = values[1].toString();
@@ -131,4 +136,6 @@ public class User implements Serializable {
             inverseJoinColumns={@JoinColumn(name="role_id",referencedColumnName="id")}
     )
     private Set<Role> roles = new HashSet<Role>();//用户与角色   多对多
+
+
 }

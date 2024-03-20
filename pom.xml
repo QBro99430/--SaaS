@@ -16,6 +16,7 @@
         <module>ihrm_system</module>
         <module>ihrm_employee</module>
         <module>ihrm_eureka</module>
+        <module>ihrm_gateway</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -106,6 +107,11 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml-schemas</artifactId>
             <version>4.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>[7.2.0, 7.2.99]</version>
         </dependency>
     </dependencies>
 

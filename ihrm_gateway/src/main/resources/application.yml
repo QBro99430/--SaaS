@@ -1,0 +1,44 @@
+server:
+  port: 9090 #服务端口
+spring:
+  application:
+    name: ihrm-gateway #指定服务名
+  redis:
+    host: 192.168.190.132
+    port: 6379
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ihrm?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123456
+
+zuul:
+  routes:
+    ihrm-company: # 这里是路由id，随意写
+      path: /company/** # 这里是映射路径
+      #url: http://localhost:9001 # 映射路径对应的实际url地址
+      service-id: ihrm-company #服务名称
+      strip-prefix: false
+      sensitive-headers:  #将指定路由的敏感头设置为空
+      custom-sensitive-headers: true  #对指定路由开启自定义敏感头
+    ihrm-system: #系统
+      path: /sys/** #配置请求URL的请求规则
+      serviceId: ihrm-system #指定Eureka注册中心中的服务id
+      stripPrefix: false
+      sensitive-headers: #将指定路由的敏感头设置为空
+      customSensitiveHeaders: true #对指定路由开启自定义敏感头
+    ihrm-employee: #员工
+        path: /employees/** #配置请求URL的请求规则
+        serviceId: ihrm-employee #指定Eureka注册中心中的服务id
+        stripPrefix: false
+        sensitive-headers: #将指定路由的敏感头设置为空
+        customSensitiveHeaders: true #对指定路由开启自定义敏感头
+
+eureka:
+  client:
+    registry-fetch-interval-seconds: 5 # 获取服务列表的周期：5s
+    service-url:
+      defaultZone: http://localhost:6868/eureka
+  instance:
+    prefer-ip-address: true
+    ip-address: localhost

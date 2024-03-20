@@ -2,12 +2,14 @@ package com.ihrm.system.service;
 
 import com.ihrm.common.service.BaseService;
 import com.ihrm.common.utils.IdWorker;
+import com.ihrm.common.utils.QiniuUploadUtil;
 import com.ihrm.domain.company.Department;
 import com.ihrm.domain.system.Role;
 import com.ihrm.domain.system.User;
 import com.ihrm.system.client.DepartmentFeignClient;
 import com.ihrm.system.dao.RoleDao;
 import com.ihrm.system.dao.UserDao;
+import com.sun.org.apache.xml.internal.security.utils.Base64;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,11 +18,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.io.IOException;
 import java.lang.annotation.Target;
 import java.util.*;
 
@@ -181,5 +185,17 @@ public class UserService extends BaseService{
         user.setRoles(roles);
         //3.更新用户
         userDao.save(user);
+    }
+
+    public String uploadImage(String id, MultipartFile file) throws Exception {
+        //根据id查询用户
+        User user = userDao.findById(id).get();
+
+        String key = new QiniuUploadUtil().upload(user.getId(), file.getBytes());
+        if (key != null){
+            user.setStaffPhoto(key);
+            userDao.save(user);
+        }
+        return key;
     }
 }

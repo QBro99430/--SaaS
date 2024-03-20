@@ -62,6 +62,12 @@ public class UserController extends BaseController {
     private DepartmentFeignClient departmentFeignClient;
 
 
+    @RequestMapping(value = "/user/upload/{id}")
+    public Result upload(@PathVariable String id, @RequestParam(name = "file") MultipartFile file) throws Exception {
+        String image = userService.uploadImage(id, file);
+        return new Result(ResultCode.SUCCESS, image);
+    }
+
     /**
      * 导入Excel，添加用户
      *  文件上传：springboot
